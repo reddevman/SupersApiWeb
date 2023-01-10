@@ -1,34 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import { getInfo } from './helpers/getInfo';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const name = 'brainiac';
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+export const SuperHeroApp = () => {
+	const [character, setCharacter] = useState([]);
 
-export default App
+	const heroes = async () => {
+		/**
+		 * El 2º parámetro, callback, espera a la información y entonces introduce los datos en el
+		 * estado mediante useState
+		 */
+		getInfo(name, setCharacter);
+	};
+	useEffect(() => {
+		heroes();
+	}, []);
+
+	// console.log(character);
+	return (
+		<ul className='gridHeroes'>
+			{character.map((el) => (
+				<li key={el.id}>
+					<p>
+						<span>Nombre:</span> {el.name}
+					</p>
+					<p>
+						<span>Nombre completo:</span>
+						{el.fullName}
+					</p>
+					<p>
+						<span>Nacimiento:</span>
+						{el.birth}
+					</p>
+					<p>
+						<span>Altura:</span>
+						{el.height}
+					</p>
+					<p>
+						<span>Peso:</span>
+						{el.weight}
+					</p>
+					<img src={el.img} alt={el.name} title={el.name} />
+				</li>
+			))}
+		</ul>
+	);
+};
